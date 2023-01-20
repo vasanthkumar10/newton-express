@@ -18,9 +18,13 @@
   },
   "homepage": "https://github.com/vasanthkumar10/newton-express#readme",
   "dependencies": {
+    "config": "^3.3.9",
+    "debug": "^4.3.4",
     "express": "^4.18.2",
     "joi": "^17.7.0",
     "morgan": "^1.10.0",
-    "nodemon": "^2.0.20"
+    "nodemon": "^2.0.20",
+    "pug": "^3.0.2",
+    "vasanth-ops": "^2.0.0"
   }
 }

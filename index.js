@@ -2,14 +2,31 @@ const express = require("express");
 const Joi = require("joi");
 const morgan = require("morgan");
 const logger = require("./logger");
+const vasanth = require("vasanth-ops");
+const config = require("config");
+const log = require("debug")("app:startup");
+const dbLog = require("debug")("app:db");
 
 const app = express();
+
+app.set("view engine", "pug");
+app.set("views", "./views");
 
 // middlewares
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static("public"));
-app.use(morgan("combined"));
+
+if (process.env.NODE_ENV === "development") {
+  app.use(morgan("combined"));
+}
+
+// console.log("config -----", config.get("name"));
+// console.log("config -----", config.get("data.value"));
+
+// console.log("node js env", process.env.NODE_ENV);
+// console.log("adding....", vasanth.add(5, 10));
+// console.log("multiplying....", vasanth.mul(5, 10));
 
 // app.use(logger);
 
@@ -30,15 +47,25 @@ let cars = [
 ];
 
 app.get("/", (req, res) => {
-  console.log("connection received");
+  log("connection received");
   //   Welcome to Vasanth cars
-  return res.send("Welcome to Vasanth cars");
+  // return res.send("Welcome to Vasanth cars");
+  return res.render("index");
 });
 
 app.get("/cars", (req, res) => {
-  console.log("connection received");
+  log("connection received");
+  dbLog("db connection successful");
   //   send back cars data
-  return res.status(200).send(cars);
+  return res.status(200).json({
+    cars,
+    metaData: {
+      pagination: {
+        pageNo: 1,
+        total: 100,
+      },
+    },
+  });
 });
 
 app.get("/cars/:id", (req, res) => {
@@ -50,6 +77,13 @@ app.get("/cars/:id", (req, res) => {
   const car = cars.find((car) => car.id === parseInt(id));
   if (!car) return res.status(404).send("Invalid car id....");
   return res.status(200).send(car);
+});
+
+app.get("/newtonschool/:name", (req, res) => {
+  return res.render("welcome", {
+    title: "Newton school",
+    message: `Welcome to Newton school ${req.params.name}`,
+  });
 });
 
 app.post("/cars", (req, res) => {
