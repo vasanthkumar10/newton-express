@@ -6,6 +6,7 @@ const vasanth = require("vasanth-ops");
 const config = require("config");
 const log = require("debug")("app:startup");
 const dbLog = require("debug")("app:db");
+const cookieParser = require("cookie-parser");
 
 const app = express();
 
@@ -16,6 +17,7 @@ app.set("views", "./views");
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static("public"));
+app.use(cookieParser());
 
 if (process.env.NODE_ENV === "development") {
   app.use(morgan("combined"));
@@ -76,7 +78,7 @@ app.get("/cars/:id", (req, res) => {
 
   const car = cars.find((car) => car.id === parseInt(id));
   if (!car) return res.status(404).send("Invalid car id....");
-  return res.status(200).send(car);
+  // return res.status(200).send(car);
 });
 
 app.get("/newtonschool/:name", (req, res) => {
@@ -132,6 +134,30 @@ function validate(car) {
   });
   return schema.validate(car);
 }
+
+app.get("/signin", (req, res) => {
+  res.cookie("session_id", "123456");
+  return res.status(200).json({
+    msg: "signed in",
+  });
+});
+
+function validateCookie(req, res, next) {
+  const { cookies } = req;
+  if ("session_id" in cookies && cookies.session_id === "123456") {
+    next();
+  } else {
+    return res.status(401).json({
+      msg: "Unauthorised",
+    });
+  }
+}
+
+app.get("/emails", validateCookie, (req, res) => {
+  return res.status(200).json({
+    msg: "This is my email",
+  });
+});
 
 // app.get("/cars/:name/:id", (req, res) => {
 //   console.log("params", req.params);
