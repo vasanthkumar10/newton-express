@@ -155,56 +155,170 @@
 
 // jwt
 
-const express = require("express");
-const jwt = require("jsonwebtoken");
+// const express = require("express");
+// const jwt = require("jsonwebtoken");
 
+// const app = express();
+// app.use(express.json());
+
+// app.get("/home", (req, res) => {
+//   return res.status(200).json({
+//     msg: "Welcome to Newton School!!!",
+//   });
+// });
+
+// app.post("/post", verifyToken, (req, res) => {
+//   jwt.verify(req.token, "secretkey", (err, auth) => {
+//     if (err) return res.sendStatus(403);
+//     return res.status(200).json({
+//       auth,
+//       msg: "Creating a post in insta",
+//     });
+//   });
+// });
+
+// // reimbursement
+
+// app.post("/login", (req, res) => {
+//   const { username, password } = req.body;
+//   jwt.sign(
+//     { username, password },
+//     "secretkey",
+//     { expiresIn: "30s" },
+//     (err, token) => {
+//       return res.status(200).json({
+//         token,
+//       });
+//     }
+//   );
+// });
+
+// function verifyToken(req, res, next) {
+//   const bearerHeader = req.headers["authorization"];
+//   if (bearerHeader === undefined)
+//     return res.status(403).json({
+//       msg: "Access denied",
+//     });
+
+//   const bearer = bearerHeader.split(" ");
+//   console.log(bearer);
+//   // console.log(bearerHeader);
+//   req.token = bearer[1];
+//   next();
+// }
+
+// app.listen(3000, () => console.log("Listening to server 3000...."));
+
+// pin number, password
+
+// username - vasanth
+// password - admin123 -> dghasjidgahd6783e46bjdsadhjasbjdaslkd
+
+// bcrypt
+
+// const express = require("express");
+// const bcrypt = require("bcrypt");
+// const app = express();
+// const saltRounds = 10;
+
+// let hashedPassword = "";
+
+// // middleware
+// app.use(express.json());
+
+// app.post("/signup", async (req, res) => {
+//   const { username, password } = req.body;
+//   const salt = await bcrypt.genSalt(saltRounds); // it will take time to generate the salt
+//   // console.log("salt generated --", salt);
+//   hashedPassword = await bcrypt.hash(password, salt);
+//   // console.log("hashed password - ", hashedPassword);
+//   return res.status(200).json({
+//     username,
+//     msg: "Successfully signed up",
+//   });
+// });
+
+// app.post("/signin", async (req, res) => {
+//   const { username, password } = req.body;
+//   // hashed password will come from db
+//   const isValid = await bcrypt.compare(password, hashedPassword);
+//   // console.log("result-", isValid);
+//   if (isValid) return res.status(200).json({ msg: "successfully signed in" });
+//   return res.status(403).json({ msg: "Invalid username or password" });
+// });
+
+// app.listen(3000, () => console.log("listening to port 3000...."));
+
+/**
+ * -----------------------
+ * PAGINATION
+ * -----------------------
+ */
+
+// id -> 1 to 200
+// users = 200;
+// limit = 10;
+
+// totalpage = users/limit => 200/10 = 20 pages
+// current page = 1 -> data: 1 to 10
+// start -> 1 => (page - 1) * limit => (1 - 1) * 10 = 0
+// end -> 10 => (page) * limit => (1) * 10 = 10
+// condition => id > start && id <= end
+// id > 0 and id <= 10 -> 1 - 10
+
+// id -> 1 to 200
+// users = 200;
+// limit = 10;
+
+// totalpage = users/limit => 200/10 = 20 pages
+// current page = 2 -> data: 11 to 20
+// start -> 11 => (page - 1) * limit => (2 - 1) * 10 = 1 * 10 = 10
+// end -> 20 => (page) * limit => (2) * 10 = 20
+// condition => id > start && id <= end
+// id > 10 and id <= 20 => 11 - 20
+
+// id -> 1 to 200
+// users = 200;
+// limit = 15;
+
+// totalpage = users/limit => 200/15 = 14 pages
+// current page = 7 -> data: 91 to 105
+// start -> 91 => (page - 1) * limit => (7 - 1) * 15 = 6 * 15 = 90
+// end -> 105 => (page) * limit => (7) * 15 = 105
+// condition => id > start && id <= end
+// id > 90 and id <= 105 => 91 - 105
+
+const express = require("express");
 const app = express();
+
 app.use(express.json());
 
-app.get("/home", (req, res) => {
-  return res.status(200).json({
-    msg: "Welcome to Newton School!!!",
+const users = [];
+
+for (let i = 1; i <= 200; i++) {
+  if (i % 3 === 0) continue;
+  users.push({
+    id: i,
+    name: `user - ${i}`,
   });
-});
-
-app.post("/post", verifyToken, (req, res) => {
-  jwt.verify(req.token, "secretkey", (err, auth) => {
-    if (err) return res.sendStatus(403);
-    return res.status(200).json({
-      auth,
-      msg: "Creating a post in insta",
-    });
-  });
-});
-
-// reimbursement
-
-app.post("/login", (req, res) => {
-  const { username, password } = req.body;
-  jwt.sign(
-    { username, password },
-    "secretkey",
-    { expiresIn: "30s" },
-    (err, token) => {
-      return res.status(200).json({
-        token,
-      });
-    }
-  );
-});
-
-function verifyToken(req, res, next) {
-  const bearerHeader = req.headers["authorization"];
-  if (bearerHeader === undefined)
-    return res.status(403).json({
-      msg: "Access denied",
-    });
-
-  const bearer = bearerHeader.split(" ");
-  console.log(bearer);
-  // console.log(bearerHeader);
-  req.token = bearer[1];
-  next();
 }
 
-app.listen(3000, () => console.log("Listening to server 3000...."));
+app.post("/users", (req, res) => {
+  const { page, limit } = req.body;
+  const start = (page - 1) * limit;
+  const end = page * limit;
+  // const data = users.filter((user) => user.id > start && user.id <= end);
+  let data = [];
+  users.forEach((user, index) => {
+    if (index >= start && index < end) data.push(user);
+  });
+
+  const pagination = {
+    totalPages: Math.ceil(users.length / limit),
+    currentPage: page,
+    totalUsers: users.length,
+  };
+  return res.status(200).json({ data, pagination });
+});
+
+app.listen(3000, () => console.log("listening to port 3000...."));
