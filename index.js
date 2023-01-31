@@ -288,37 +288,94 @@
 // condition => id > start && id <= end
 // id > 90 and id <= 105 => 91 - 105
 
-const express = require("express");
-const app = express();
+// const express = require("express");
+// const app = express();
 
-app.use(express.json());
+// app.use(express.json());
 
-const users = [];
+// const users = [];
 
-for (let i = 1; i <= 200; i++) {
-  if (i % 3 === 0) continue;
-  users.push({
-    id: i,
-    name: `user - ${i}`,
-  });
-}
+// for (let i = 1; i <= 200; i++) {
+//   if (i % 3 === 0) continue;
+//   users.push({
+//     id: i,
+//     name: `user - ${i}`,
+//   });
+// }
 
-app.post("/users", (req, res) => {
-  const { page, limit } = req.body;
-  const start = (page - 1) * limit;
-  const end = page * limit;
-  // const data = users.filter((user) => user.id > start && user.id <= end);
-  let data = [];
-  users.forEach((user, index) => {
-    if (index >= start && index < end) data.push(user);
-  });
+// app.post("/users", (req, res) => {
+//   const { page, limit } = req.body;
+//   const start = (page - 1) * limit;
+//   const end = page * limit;
+//   // const data = users.filter((user) => user.id > start && user.id <= end);
+//   let data = [];
+//   users.forEach((user, index) => {
+//     if (index >= start && index < end) data.push(user);
+//   });
 
-  const pagination = {
-    totalPages: Math.ceil(users.length / limit),
-    currentPage: page,
-    totalUsers: users.length,
-  };
-  return res.status(200).json({ data, pagination });
-});
+//   const pagination = {
+//     totalPages: Math.ceil(users.length / limit),
+//     currentPage: page,
+//     totalUsers: users.length,
+//   };
+//   return res.status(200).json({ data, pagination });
+// });
 
-app.listen(3000, () => console.log("listening to port 3000...."));
+// app.listen(3000, () => console.log("listening to port 3000...."));
+
+/**
+ * ----------------------
+ * TESTING
+ * ----------------------
+ */
+
+// Manual Testing -> everything is tested by human -> sanity(for older code) and test(new code)
+// Automated Testing -> code to test our feature
+
+// Pros:
+// 1. Test prev code in less time
+// 2. Catch bugs before releasing
+// 3. Refactor our code -> changing bad code to good code
+
+// Types of Automated testing ->
+// 1. Unit test cases -> each and every function (very fastly) -> more in numbers
+// 2. Integration test cases -> test with external dependencies (medium) -> comparitively less
+// 3. E2E(End to end) test cases -> from the start of the flow to the end (slow) -> very less
+
+// Frameworks -> Jasmine, (Mocha, chai, sinon), jest
+
+// -----------------
+// UNIT TEST CASES
+// -----------------
+//  jest -> filename.test.js
+
+// test number
+module.exports.absolute = function (number) {
+  //   if (number > 0) return number;
+  //   if (number < 0) return -number;
+  //   return 0;
+  //   if (number >= 0) return number;
+  //   return -number;
+  return number >= 0 ? number : -number;
+};
+
+// test strings
+module.exports.greet = function (name) {
+  return `Welcome ${name}`;
+};
+
+// test arrays
+module.exports.getCurrencies = function () {
+  return ["USD", "INR", "EUR", "AUD"];
+};
+
+// test objects
+module.exports.getProduct = function (id) {
+  return { id, price: 10, name: "icecream" };
+};
+
+// test exceptions
+module.exports.registerUser = function (username) {
+  if (!username) throw new Error("Username is required");
+  return { id: 1, username };
+};
