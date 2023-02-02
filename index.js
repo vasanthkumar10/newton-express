@@ -379,3 +379,13 @@ module.exports.registerUser = function (username) {
   if (!username) throw new Error("Username is required");
   return { id: 1, username };
 };
+
+// mock functions
+const db = require("./db");
+module.exports.applyDiscount = function (order) {
+  let { customerId, totalPrice } = order;
+  const customer = db.getCustomerData(customerId);
+
+  if (customer.points > 10) totalPrice = totalPrice * 0.9;
+  return totalPrice;
+};
