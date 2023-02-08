@@ -141,3 +141,91 @@ WHERE price = ( SELECT MIN(price) FROM phones );
 SELECT SUM(units_sold) AS total_units FROM phones;
 SELECT AVG(units_sold) AS total_units FROM phones;
 SELECT AVG(price) AS total_units FROM phones;
+
+-- PRIMART KEY -> Unique key in a table
+-- FOREIGN KEY -> creates relation between 2 tables and it points to primary key
+-- Primary key is always unique and foreign key is not unique
+-- SERIAL -> auto increment number
+
+CREATE TABLE users(
+	id SERIAL PRIMARY KEY,
+	username VARCHAR(50)
+);
+
+CREATE TABLE photos (
+ id SERIAL PRIMARY KEY,
+ url VARCHAR(200),
+ user_id INTEGER REFERENCES users(id)
+);
+
+CREATE TABLE photos (
+ id SERIAL PRIMARY KEY,
+ url VARCHAR(200),
+ user_id INTEGER REFERENCES users(id) ON DELETE CASCADE
+);
+
+
+CREATE TABLE photos (
+ id SERIAL PRIMARY KEY,
+ url VARCHAR(200),
+ user_id INTEGER REFERENCES users(id) ON DELETE SET NULL
+);
+
+-- Types of relations
+1. One to One
+2. One to Many
+3. Many to Many
+
+
+SELECT username, url FROM users
+JOIN photos ON users.id = photos.user_id
+
+SELECT id, username, url
+FROM users
+JOIN photos ON users.id = photos.user_id -- error
+
+
+SELECT users.id, username, url, photos.id 
+FROM users
+JOIN photos ON users.id = photos.user_id
+
+SELECT u.id AS user_id, username, url, p.id AS photo_id
+FROM users AS u
+JOIN photos AS p ON u.id = p.user_id
+
+-- 1. Find each comment, show the contents of comment and username who wrote that comment
+SELECT contents, username
+FROM comments
+JOIN users ON comments.user_id = users.id;
+
+-- 2. For each comment, list the content of the comment and url of the photo
+SELECT contents, url
+FROM comments
+JOIN photos ON comments.photo_id = photos.id;
+
+-- 3. show each photo url and username of the photo
+SELECT url, username FROM photos
+JOIN users ON photos.user_id = users.id;
+
+
+-- INNER JOIN
+SELECT url, username, user_id FROM photos
+INNER JOIN users ON photos.user_id = users.id;
+
+-- LEFT JOIN
+SELECT url, username, user_id, users.id FROM photos
+LEFT JOIN users ON photos.user_id = users.id;
+
+-- RIGHT JOIN
+SELECT url, username, user_id, users.id FROM photos
+RIGHT JOIN users ON photos.user_id = users.id;
+
+
+-- FULL JOIN
+SELECT url, username, user_id, users.id FROM photos
+FULL JOIN users ON photos.user_id = users.id;
+
+
+-- find the comments where users commented on own photos
+-- find the comments, username where users commented on own photos
+https://docs.google.com/document/d/18COWqkmi9zWqdU4QsWWYKM5UNzN8WymzZhU2pYnYIAk/edit?usp=sharing
