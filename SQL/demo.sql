@@ -227,5 +227,100 @@ FULL JOIN users ON photos.user_id = users.id;
 
 
 -- find the comments where users commented on own photos
+SELECT contents, comments.user_id FROM comments
+JOIN photos ON comments.user_id = photos.user_id;
+
+SELECT DISTINCT(contents), comments.user_id FROM comments
+JOIN photos ON comments.user_id = photos.user_id;
+
+SELECT DISTINCT(user_id) FROM comments; -- unique data
+
 -- find the comments, username where users commented on own photos
 https://docs.google.com/document/d/18COWqkmi9zWqdU4QsWWYKM5UNzN8WymzZhU2pYnYIAk/edit?usp=sharing
+
+-- GROUPING AGGREGATION
+SELECT user_id, count(contents) FROM comments
+GROUP BY user_id;
+
+-- only user_id 1
+SELECT user_id, count(contents) FROM comments
+WHERE user_id = 1
+GROUP BY user_id;
+
+SELECT user_id, photo_id, count(contents) FROM comments
+-- WHERE user_id = 1
+GROUP BY user_id, photo_id
+-- HAVING photo_id = 5;
+
+
+-- SORTING AND LIMITING
+SELECT * FROM comments
+ORDER BY user_id
+
+SELECT * FROM comments
+ORDER BY user_id DESC
+
+SELECT * FROM comments
+ORDER BY user_id, photo_id
+
+SELECT * FROM comments
+ORDER BY user_id DESC, photo_id ASC
+
+
+SELECT * FROM comments
+WHERE user_id > 3
+ORDER BY user_id DESC, photo_id ASC
+LIMIT 10
+
+SELECT * FROM comments
+LIMIT 5 OFFSET 10
+
+-- PAGINATION
+SELECT * FROM comments
+LIMIT 15 OFFSET 15
+-- LIMIT 15(limit) OFFSET 15 ((page - 1) * (limit))
+
+
+-- WILD CARD CHARS -> %, _
+-- % -> 0 or more than 1 chars
+-- _ -> exactly match the count of _
+
+SELECT * FROM comments
+WHERE contents LIKE '%olu%';
+
+SELECT * FROM comments
+WHERE contents LIKE 'Est%';
+
+SELECT * FROM comments
+WHERE contents LIKE '%facilis.';
+
+SELECT * FROM comments
+WHERE contents LIKE '%facili__';
+
+
+-- CTE -> COMMON TABLE EXPRESSION
+
+WITH
+CTE_USERS AS (
+	SELECT * FROM users
+	WHERE id < 3
+)
+
+SELECT * FROM CTE_USERS;
+
+-- CTE -> COMMON TABLE EXPRESSION
+
+WITH 
+cte_comments AS (
+	SELECT * FROM comments
+	WHERE user_id < 3
+),
+
+cte_users AS (
+	SELECT * FROM users
+	WHERE id < 3
+)
+
+SELECT user_id, username, contents FROM cte_comments AS cc
+JOIN cte_users AS cu ON cu.id = cc.user_id
+ORDER BY user_id;
