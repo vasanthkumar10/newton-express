@@ -350,42 +350,42 @@
 //  jest -> filename.test.js
 
 // test number
-module.exports.absolute = function (number) {
-  //   if (number > 0) return number;
-  //   if (number < 0) return -number;
-  //   return 0;
-  //   if (number >= 0) return number;
-  //   return -number;
-  return number >= 0 ? number : -number;
-};
+// module.exports.absolute = function (number) {
+//   //   if (number > 0) return number;
+//   //   if (number < 0) return -number;
+//   //   return 0;
+//   //   if (number >= 0) return number;
+//   //   return -number;
+//   return number >= 0 ? number : -number;
+// };
 
-// test strings
-module.exports.greet = function (name) {
-  return `Welcome ${name}`;
-};
+// // test strings
+// module.exports.greet = function (name) {
+//   return `Welcome ${name}`;
+// };
 
-// test arrays
-module.exports.getCurrencies = function () {
-  return ["USD", "INR", "EUR", "AUD"];
-};
+// // test arrays
+// module.exports.getCurrencies = function () {
+//   return ["USD", "INR", "EUR", "AUD"];
+// };
 
-// test objects
-module.exports.getProduct = function (id) {
-  return { id, price: 10, name: "icecream" };
-};
+// // test objects
+// module.exports.getProduct = function (id) {
+//   return { id, price: 10, name: "icecream" };
+// };
 
-// test exceptions
-module.exports.registerUser = function (username) {
-  if (!username) throw new Error("Username is required");
-  return { id: 1, username };
-};
+// // test exceptions
+// module.exports.registerUser = function (username) {
+//   if (!username) throw new Error("Username is required");
+//   return { id: 1, username };
+// };
 
-// mock functions
-const db = require("./db");
-module.exports.applyDiscount = function (order) {
-  let { customerId, totalPrice } = order;
-  const customer = db.getCustomerData(customerId);
+// // mock functions
+// const db = require("./db");
+// module.exports.applyDiscount = function (order) {
+//   let { customerId, totalPrice } = order;
+//   const customer = db.getCustomerData(customerId);
 
-  if (customer.points > 10) totalPrice = totalPrice * 0.9;
-  return totalPrice;
-};
+//   if (customer.points > 10) totalPrice = totalPrice * 0.9;
+//   return totalPrice;
+// };

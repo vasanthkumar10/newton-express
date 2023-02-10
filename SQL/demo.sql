@@ -324,3 +324,18 @@ cte_users AS (
 SELECT user_id, username, contents FROM cte_comments AS cc
 JOIN cte_users AS cu ON cu.id = cc.user_id
 ORDER BY user_id;
+
+EXPLAIN ANALYSE
+SELECT id, contents FROM comments
+WHERE id = 97;
+
+CREATE INDEX comments_idx ON comments(id);
+
+DROP INDEX comments_idx;
+
+-- Normalisation Techniques (NF- Normalisation Forms)
+-- rules to create schema
+-- 1NF -> It should obey atomicity (A single column should contain only 1 data per cell)
+-- 2NF -> It should satisfy 1NF. Whenever we have partial dependency -> create new table
+-- 3NF -> It should satisfy 2NF. Whenever we have 2 columns completely independent of main data, 
+-- and any one of that column depends on main data, we can seperate them into a 2 new tables
