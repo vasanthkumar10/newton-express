@@ -134,3 +134,33 @@ app.listen(3000, () => console.log("server running on port 3000....."));
 // Reverse Proxy -> A server sits inbetween client and server. It hides(masks) the server identity typically used
 // for load balancing, caching or logging the data
 // Nginx -> load balancer, caching and it acts as a reverse proxy as well
+
+// Hashing -> A function which takes a data and converts into unreadable format
+// SHA -> Secure Hashing Algorithms are used in hashing
+// Hot spot ->  If data is splitted, most of the traffic will come to the single server(hot spot)
+
+// consistent hashing -> It is a type of hashing mechanishm to reduce the client server mapping.
+// loadbalancer -> who is going to forward the request
+// Rendezvous hashing
+
+// Key - value pairs for the caching purpose
+// redis -> inmemory key value store
+// replacments -> memcache, zookeeper
+
+// Storage types
+// BLOB -> Binary Large OBject -> unstructured binary data
+// GCS, S3 are some of the services where we can store images or videos
+
+// Graph db -> Neo4j
+// GraphQL + Prisma
+// Timeseries -> prometheous (monitor load, cpu, servers)
+
+// Replication of db -> Write db -> pipelines -> read db
+// Copying is of 2 ways -> synchronous and asynchronous
+
+// Splitting the db -> Sharding
+// small chunks of db is called shards
+// DB can be splitted based on region, time zones, roles, hashing
+
+// Peer to peer network -> A collection of machines is used to perform the action
+// Gossips protocol -> will be used to keep track of order
