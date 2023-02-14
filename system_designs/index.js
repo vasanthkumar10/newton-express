@@ -164,3 +164,28 @@ app.listen(3000, () => console.log("server running on port 3000....."));
 
 // Peer to peer network -> A collection of machines is used to perform the action
 // Gossips protocol -> will be used to keep track of order
+
+// Leader election -> In a cluster of servers(master slave architecture), if the master dies,
+// the next leader is selected based on parameters like region, type of transactions and payment methods etc
+
+// Consensus algorithms -> Paxos and raft algorithm
+// load balancer as a reverse proxy to mask the servers ip.
+// In order to track the leader we are going to use redis or zookeeper (in memory db)
+
+// HTTP polling -> The process of fetching the resource regularly at an constant interval of time
+// Sockets -> Creates a pipeline connection between client and the server.
+// Client is always listening to the server and whenever server gets an update, it'll be sent to the client
+
+// DOS -> Denial of service
+// DDOS -> Distributed Denial of Service
+
+// Rate limiting -> The process of limiting the no of requests received from the
+// common client per interval of time
+// redis: ip -> no of time user made the request (expire time of 10sec(eg))
+
+// TLS -> Transport Layer Security is used to create the handshake where the public/private key transfer
+// will happen via SSL (Secure Socket Layer) certificate
+// SSL certificate is provided by domain service provider(go-daddy, wix, google)
+// Certificate Authority is giving the SSL certificates to the domains
+
+// MITM attacks -> Man in the middle attack is where the hacker gets the data in the req res cycle

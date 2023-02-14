@@ -1,0 +1,17 @@
+# In json ->
+# {
+#   "API_KEY": "aabbccdd",
+#   "regions": ["Asia", "US", "UK", "Africa"],
+#   "data": { "value": "vasanth" },
+# }
+
+# In YAML
+
+API_KEY: aabbccdd
+regions:
+  - Asia
+  - US
+  - UK
+  - Africa
+data:
+  value: vasanth
